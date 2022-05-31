@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title> My Recipe Book </title>
+		<meta charset="UTF-8">
+		<meta name="viewpoint" content ="width-device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="style.css"/>
+    	<link rel="stylesheet"href="fontawesome/css/all.css"/>
+    </head>
+    
+    <body class="recipes" align="center" onload="getRecipeList()">
+        <img src="image/My%20recipe%20book%20(1).png"height=200px>
+            <div id="recipe-menu">
+                <a href="index.html"><i1 class="fa-solid fa-house" ><p>Home</p></i1></a>
+            </div>
+		
+            <br>
+		
+             
+            <div class="desserts-menu-item" id="output">
+				
+			</div>
+        
+		
+		<script>
+			var category = getCategory();
+			
+			function getRecipeList(){
+				var rootPath = "https://mysite.itvarsity.org/api/recipe-book/";
+				var fullPath = rootPath + "get-recipes/?category=" + category;
+				
+				fetch(fullPath)
+					.then(function(response){
+					return response.json();
+					
+				})
+				.then(function(data){
+					var output = "";
+					for(a = 0; a< data.length; a++){
+						output +=`
+							<a href="show-recipe.html?id=${data[a].id}">
+							
+								<div class="home-menu-item">
+								<h1>${data[a].title}<i class="fas fa-chevron-circle-right"></i></h1>
+								<p>${data[a].description}</p>
+									</div>
+								
+							</a>
+
+						`;
+						
+					}
+					document.getElementById("output").innerHTML =output;
+				})
+			}
+			
+			function getCategory(){
+				var url = window.location.href;
+				var pos = url.search("=");
+				var category = url.slice(pos + 1);
+				
+				return category;
+			}
+		</script>
+    </body>
+</html>
